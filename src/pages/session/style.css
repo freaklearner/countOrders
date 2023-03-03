@@ -1,0 +1,21 @@
+.sessionRoot{
+    border: 1px solid black;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.sessionTitle{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.sessionInput{
+    margin: 10px;
+    width: 80%;
+}

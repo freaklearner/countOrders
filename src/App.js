@@ -1,23 +1,19 @@
-import logo from './logo.svg';
+import { useContext } from 'react';
 import './App.css';
+import Login from './pages/login';
+import Session from './pages/session';
+import { LoginContext } from './context/loginContext';
+
 
 function App() {
+  const {login} = useContext(LoginContext);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        login?<Session user={{"station": "Test Station One"}}></Session>:<Login></Login>
+      }
+      {/* <Login></Login> */}
+      
     </div>
   );
 }

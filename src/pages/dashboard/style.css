@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Roboto:wght@300;400&display=swap');
+.header{
+    margin-bottom: 2rem;
+}
+.heading{
+    font-size: 2rem;
+    color: #000;
+    margin: 0px !important;
+    text-align: center;
+}
+.subHeading{
+    font-size: 1.5rem;
+    color: gray !important;
+    margin: 0px !important;
+    text-align: center;
+}
+
+.pill{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 90%;
+    border: 1px solid #000;
+    margin: 10px;
+
+}
+@media screen and (max-width: 768px){
+    .pill{
+        padding: 5px;
+        margin: 14px;
+    }
+}
+.pillTitle{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #000;
+    margin: 0px !important;
+}
+
+.pillButton{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    margin: 0px !important;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.pillVeg{
+    background-color: green !important;
+    
+}
+
+.pillNonVeg{
+    background-color: red !important;
+}
+
+.closeSession{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    border: 2px solid black !important;
+    margin: 0px !important;
+    cursor: pointer;
+    margin-top: 20px !important;
+}
+
+.countText{
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8rem;
+    color: gray;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.disableClass{
+    pointer-events: none;
+    background-color: lightgray;
+    border-color: gray;
+}
+
+
+
