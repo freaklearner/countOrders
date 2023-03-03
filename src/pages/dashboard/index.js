@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, Fragment } from "react";
 import { Typography, Button, Spin } from "antd";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../configs/firebaseConfig";
+import {PlusOutlined, MinusOutlined} from '@ant-design/icons';
 
 import useItems from "../../hooks/useItems";
 import useAddItems from "../../hooks/useAddItems";
@@ -35,10 +36,10 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
     return () => unSub();
   }, []);
 
-  const addItemsHandler = (item, id) => {
-    //debugger;
+  const addItemsHandler = (item, id, price) => {
+    debugger;
     document.getElementById(id).classList.add("disableClass");
-    addItem(sessionId, item)
+    addItem(sessionId, item,price)
       .then((res) => {
         //document.getElementById(id).style.pointerEvents = "auto";
         document.getElementById(id).classList.remove("disableClass");
@@ -48,6 +49,22 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
         document.getElementById(id).classList.remove("disableClass");
         console.log(err);
       });
+  };
+
+  const removeItemsHandler = (item, id) => {
+    if(sessionObject[item] && sessionObject[item] > 0){
+      document.getElementById(id).classList.add("disableClass");
+      removeItem(sessionId, item)
+        .then((res) => {
+          //document.getElementById(id).style.pointerEvents = "auto";
+          document.getElementById(id).classList.remove("disableClass");
+          console.log(res);
+        })
+        .catch((err) => {
+          document.getElementById(id).classList.remove("disableClass");
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -73,16 +90,26 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
                     : "(0)"}
                 </span>
               </span>
-
+              <span>
               <Button
-                onClick={(e) => addItemsHandler(item.name, item.id)}
+                onClick={(e) => removeItemsHandler(item.name, item.id)}
+                size={window.screen.width <= 768 ? "middle" : "large"}
+                className="pillButtonDelete"
+                // type="dashed"
+                icon={<MinusOutlined />}
+                >
+                
+              </Button>
+              <Button
+                onClick={(e) => addItemsHandler(item.name, item.id, item.price)}
                 size={window.screen.width <= 768 ? "middle" : "large"}
                 className="pillButton pillVeg"
                 type="primary"
-                shape="round"
+                icon={<PlusOutlined/>}
                 >
-                Add
+                
               </Button>
+              </span>
             </div>
           );
         })}
@@ -98,16 +125,24 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
                     : "(0)"}
                 </span>
               </span>
+              <span>
               <Button
-                onClick={(e) => addItemsHandler(item.name, item.id)}
+                onClick={(e) => removeItemsHandler(item.name, item.id)}
+                size={window.screen.width <= 768 ? "middle" : "large"}
+                className="pillButtonDelete"
+                // type="dashed"
+                icon={<MinusOutlined />}
+                >
+              </Button>
+              <Button
+                onClick={(e) => addItemsHandler(item.name, item.id, item.price)}
                 size={window.screen.width <= 768 ? "middle" : "large"}
                 className="pillButton pillNonVeg"
                 type="primary"
-                shape="round"
-                danger
+                icon={<PlusOutlined/>}
               >
-                Add
               </Button>
+              </span>
             </div>
           );
         })}
