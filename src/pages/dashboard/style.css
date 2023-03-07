@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Roboto:wght@300;400&display=swap');
 .header{
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 .heading{
     font-size: 2rem;
@@ -95,6 +95,54 @@
     background-color: lightgray;
     border-color: gray;
 }
+
+.typeList{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px !important;
+    padding: 0px !important;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.3rem;
+    color: #000;
+    width: 30%;
+    margin-bottom: 10px !important;
+    /* border: 1px solid red; */
+    
+}
+
+.list{
+    display: inline-block;
+    padding: 10px 20px !important;
+    border-radius: 8px;
+    list-style: none;
+    text-align: center;
+    color: gray;
+    border: 2px solid gray;
+}
+
+.listSelected{
+    background-color: #999999;
+    color: white;
+    border: 2px solid #000;
+}
+
+
+@media screen and (max-width: 768px){
+    .typeList{
+        width: 90%;
+    }
+
+    .list{
+        padding: 5px 10px !important;
+        font-size: 1.2rem;
+        font-weight: 600;
+        min-width: 20%;
+        margin-bottom: 5px;
+    }
+}
+
+
 
 
 

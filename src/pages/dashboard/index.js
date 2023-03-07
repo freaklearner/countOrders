@@ -6,35 +6,79 @@ import {PlusOutlined, MinusOutlined} from '@ant-design/icons';
 
 import useItems from "../../hooks/useItems";
 import useAddItems from "../../hooks/useAddItems";
+import useCategory from "../../hooks/useCategory";
 import { LoginContext } from "../../context/loginContext";
+import addItemsToDb from '../updateDb/index';
 import "./style.css";
+import data from "../../data/items";
 
 const Dashboard = ({ sessionId, sessionName, closeSession }) => {
+  const [sessionObject, setSessionObject] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [Items, setItems] = useState([]);
   const [vegMenu, setVegMenu] = useState([]);
   const [nonVegMenu, setNonVegMenu] = useState([]);
-  const [sessionObject, setSessionObject] = useState({});
+
   const { station, id } = useContext(LoginContext);
   const { getItems } = useItems();
+  const { getCategories } = useCategory();
   const { addItem, removeItem } = useAddItems();
+  const {dataAdd} = addItemsToDb();
 
-  useEffect(() => {
-    debugger;
-    getItems().then((items) => {
+  
+  
+
+  useEffect(() => {  
+    //dataAdd();
+    getCategories().then((categories) => {
+      setCategories(categories);
+      
+      return getItems(station);
+    })
+    .then((items) => {
       debugger;
+      setItems(items);
+      const filteredItems = items.filter((item) => item.type === selectedCategory);
+      
       setVegMenu(
-        items
-          .filter((item) => item.category === "veg")
+        filteredItems
+          .filter((item) => item.type === "veg")
           .sort((a, b) => a.code - b.code)
       );
-      setNonVegMenu(items.filter((item) => item.category === "non-veg"));
+      let data = filteredItems.filter((item) => item.type === "non-veg");
+      data= data.sort((a,b)=>a.code-b.code);
+      setNonVegMenu(data);
+      //setNonVegMenu(filteredItems.filter((item) => item.type === "non-veg").sort((a, b) => a.code - b.code));
       //setMenu(items.sort((a,b)=>a.name.localeCompare(b.name)));
+      
       console.log(window.screen.width);
     });
+    
+
     const unSub = onSnapshot(doc(db, "sessions", sessionId + ""), (doc) => {
       setSessionObject(doc.data());
     });
     return () => unSub();
   }, []);
+
+  useEffect(() => {
+    debugger;
+    const filteredItems = Items.filter((item) => item.category === selectedCategory);
+    let data = filteredItems.filter((item) => item.type === "non-veg");
+      data= data.sort((a,b)=>a.code-b.code);
+    setVegMenu(
+      filteredItems
+        .filter((item) => item.type === "veg")
+        .sort((a, b) => a.code - b.code)
+    );
+    setNonVegMenu(data);
+  },[selectedCategory]);
+
+  const selectCategoryHandler = (category) => {
+    setSelectedCategory(category);
+    
+  }
 
   const addItemsHandler = (item, id, price) => {
     debugger;
@@ -67,6 +111,8 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
     }
   };
 
+  const types = ["STEAM", "FRIED","TANDOOR"];
+
   return (
     <Fragment>
       <div className="header">
@@ -75,8 +121,23 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
         </Typography.Title>
         <Typography.Title className="subHeading" level={3}>
           {sessionName}
-        </Typography.Title>
+        </Typography.Title>``
       </div>
+
+       <div className="typeList">
+        {categories && categories.map((type,index) => {
+          let cl="list";
+          if(selectedCategory==type.alias){
+            cl="list listSelected"
+          }
+          return (
+            <span onClick={()=>selectCategoryHandler(type.alias)} key={type.alias} className={cl}>
+              {type.alias.toUpperCase()}
+            </span>
+          );
+        })}
+      </div>
+      
 
       {vegMenu &&
         vegMenu.map((item) => {
@@ -85,14 +146,14 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
               <span className="pillTitle">
                 {item.name}
                 <span className="countText">
-                  {sessionObject[item.name]
-                    ? `(${sessionObject[item.name]})`
+                  {sessionObject[item.alias]
+                    ? `(${sessionObject[item.alias]})`
                     : "(0)"}
                 </span>
               </span>
               <span>
               <Button
-                onClick={(e) => removeItemsHandler(item.name, item.id)}
+                onClick={(e) => removeItemsHandler(item.alias, item.id)}
                 size={window.screen.width <= 768 ? "middle" : "large"}
                 className="pillButtonDelete"
                 // type="dashed"
@@ -101,7 +162,7 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
                 
               </Button>
               <Button
-                onClick={(e) => addItemsHandler(item.name, item.id, item.price)}
+                onClick={(e) => addItemsHandler(item.alias, item.id, item.price)}
                 size={window.screen.width <= 768 ? "middle" : "large"}
                 className="pillButton pillVeg"
                 type="primary"
@@ -120,14 +181,14 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
               <span className="pillTitle">
                 {item.name}
                 <span className="countText">
-                  {sessionObject[item.name]
-                    ? `(${sessionObject[item.name]})`
+                  {sessionObject[item.alias]
+                    ? `(${sessionObject[item.alias]})`
                     : "(0)"}
                 </span>
               </span>
               <span>
               <Button
-                onClick={(e) => removeItemsHandler(item.name, item.id)}
+                onClick={(e) => removeItemsHandler(item.alias, item.id)}
                 size={window.screen.width <= 768 ? "middle" : "large"}
                 className="pillButtonDelete"
                 // type="dashed"
@@ -135,7 +196,7 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
                 >
               </Button>
               <Button
-                onClick={(e) => addItemsHandler(item.name, item.id, item.price)}
+                onClick={(e) => addItemsHandler(item.alias, item.id, item.price)}
                 size={window.screen.width <= 768 ? "middle" : "large"}
                 className="pillButton pillNonVeg"
                 type="primary"

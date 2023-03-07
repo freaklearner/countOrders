@@ -1,9 +1,9 @@
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, query, where} from "firebase/firestore";
 import {db} from "../configs/firebaseConfig";
 
 const useItems = () => {
-    const getItems = async () => {
-        const q = collection(db,'items');
+    const getItems = async (station) => {
+        const q = query(collection(db,'items'),where('station','==',station));
         const querySnapshot = await getDocs(q);
         const items = [];
         querySnapshot.forEach(doc=>{
