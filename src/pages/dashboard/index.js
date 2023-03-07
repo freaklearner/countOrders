@@ -51,7 +51,7 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
       setNonVegMenu(data);
       //setNonVegMenu(filteredItems.filter((item) => item.type === "non-veg").sort((a, b) => a.code - b.code));
       //setMenu(items.sort((a,b)=>a.name.localeCompare(b.name)));
-      
+
       console.log(window.screen.width);
     });
     
@@ -121,7 +121,7 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
         </Typography.Title>
         <Typography.Title className="subHeading" level={3}>
           {sessionName}
-        </Typography.Title>``
+        </Typography.Title>
       </div>
 
        <div className="typeList">
