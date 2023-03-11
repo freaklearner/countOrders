@@ -21,6 +21,12 @@ const Session = ({ user }) => {
             setSessionId(openSessions.id);
             setSessionName(openSessions.name);
         }
+        else{
+            debugger;
+            let daylist = ["Sunday","Monday","Tuesday","Wednesday ","Thursday","Friday","Saturday"];
+            let today = new Date();
+          sessionRef.current.input.value=daylist[today.getDay()].toUpperCase();
+        }
     })
     .catch((err)=>{
         console.log(err);

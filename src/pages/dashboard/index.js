@@ -11,6 +11,7 @@ import { LoginContext } from "../../context/loginContext";
 import addItemsToDb from '../updateDb/index';
 import "./style.css";
 import data from "../../data/items";
+import useItemUpdate from "../../hooks/useItemUpdate";
 
 const Dashboard = ({ sessionId, sessionName, closeSession }) => {
   const [sessionObject, setSessionObject] = useState({});
@@ -24,7 +25,9 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
   const { getItems } = useItems();
   const { getCategories } = useCategory();
   const { addItem, removeItem } = useAddItems();
+  const {addItemtoCollection, deleteItemFromCollection} = useItemUpdate(station,id, sessionId, sessionName);
   const {dataAdd} = addItemsToDb();
+  
 
   
   
@@ -86,6 +89,7 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
     addItem(sessionId, item,price)
       .then((res) => {
         //document.getElementById(id).style.pointerEvents = "auto";
+        addItemtoCollection(item, price);
         document.getElementById(id).classList.remove("disableClass");
         console.log(res);
       })
@@ -100,6 +104,7 @@ const Dashboard = ({ sessionId, sessionName, closeSession }) => {
       document.getElementById(id).classList.add("disableClass");
       removeItem(sessionId, item)
         .then((res) => {
+          deleteItemFromCollection(item);
           //document.getElementById(id).style.pointerEvents = "auto";
           document.getElementById(id).classList.remove("disableClass");
           console.log(res);
